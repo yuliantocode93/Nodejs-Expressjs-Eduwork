@@ -1,8 +1,15 @@
 const http = require("http");
 
 const server = http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("Hello, World!");
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "text/plain");
+  res.write(
+    JSON.stringify({
+      status: "success",
+      message: "Welcome to my API",
+    })
+  );
+  res.end();
 });
 
 server.listen(3000, () => {
