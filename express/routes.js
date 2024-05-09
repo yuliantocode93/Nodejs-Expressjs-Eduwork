@@ -34,16 +34,17 @@ router.post("/product", upload.single("image"), (req, res) => {
     status,
     image,
   };
-
   res.json(newProduct);
+
+  // res.sendFile(__dirname + "/uploads/" + image.originalname);
 });
 
-router.get("/:category/:tag", (req, res) => {
-  const { category, tag } = req.params;
-  res.json({
-    category,
-    tag,
-  });
-});
+// router.get("/:category/:tag", (req, res) => {
+//   const { category, tag } = req.params;
+//   res.json({
+//     category,
+//     tag,
+//   });
+// });
 
 module.exports = router;
