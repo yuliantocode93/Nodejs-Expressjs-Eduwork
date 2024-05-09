@@ -1,16 +1,19 @@
 const express = require("express");
-
 const app = express();
+const router = require("./routes");
+const logger = require("./middleware/logger");
 
-app.use("/", (req, res) => {
+app.use(logger);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(router);
+app.use((req, res, next) => {
+  res.status(404);
   res.send({
-    status: "success",
-    message: "Welcome to my API express",
-    version: "1.0.0",
-    author: "yulianto",
+    status: "error",
+    message: "Resource " + req.originalUrl + " not found",
   });
 });
-
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
