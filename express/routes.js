@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const multer = require("multer");
-const upload = multer({ dest: "/uploads" });
+const upload = multer({ dest: "uploads" });
+const fs = require("fs");
+const path = require("path");
 
 router.get("/", (req, res, next) => {
   const { page, total } = req.query;
@@ -14,7 +16,17 @@ router.get("/", (req, res, next) => {
 
 router.post("/product", upload.single("image"), (req, res) => {
   const { name, price, stock, status } = req.body;
-  const image = req.file ? req.file.path : null;
+  const image = req.file;
+  if (!image) {
+    return res.status(400).json({
+      status: "error",
+      message: "Image is required",
+    });
+  }
+  if (image) {
+    const targetPath = path.join(__dirname, "uploads", image.originalname);
+    fs.renameSync(image.path, targetPath);
+  }
   const newProduct = {
     name,
     price,
